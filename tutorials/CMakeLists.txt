@@ -1,0 +1,3 @@
+﻿add_subdirectory(tutorials_101_load_plugin)
+add_subdirectory(tutorials_102_load_plugin)
+add_subdirectory(tutorials_103_global_data)
