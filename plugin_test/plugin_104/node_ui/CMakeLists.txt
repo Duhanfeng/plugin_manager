@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 
-project("Plugin.103")
+set(SOURCE_VISION_NAME "Plugin.104")
+project("${SOURCE_VISION_NAME}.Control")
 
 #################################################################################
 # 设置C++编译器选项
@@ -11,10 +12,13 @@ project("Plugin.103")
 # 第三方库
 #################################################################################
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../glfw-3.3.9/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../glfw-3.3.9/lib)
+
 #################################################################################
 # 系统参数
 #################################################################################
-add_definitions(-DSS_PLUGIN_EXPORT_FLAG)
+add_definitions(-DSS_UI_PLUGIN_EXPORT_FLAG)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -28,21 +32,20 @@ set(PROJECT_SOURCES
         include/node.hpp
         src/plugin_export.cxx
         src/node.cxx
-        src/global_data.hpp
-        src/global_data.cxx
 )
 
 # 将源代码添加到此项目的可执行文件。
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
-#target_link_libraries(
-#        ${PROJECT_NAME}
-#        fmt
-#        glfw3
-#)
+target_link_libraries(
+        ${PROJECT_NAME}
+        ${SOURCE_VISION_NAME}
+        glfw3dll
+)
 
 ####################################################################################################
 # 安装
 ####################################################################################################
+
 
 ####################################################################################################
 # 设置生成时的操作

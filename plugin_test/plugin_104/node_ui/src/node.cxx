@@ -3,24 +3,21 @@
 //
 
 #include "node.hpp"
-#include <iostream>
-#include "global_data.hpp"
 
-Node::Node()
+NodeUI::NodeUI(Node* node)
 {
     vectors_.resize(1000 * 1000);
     data_ = new int[10000u * 10000u * 3u];
     ptr_ = std::make_shared<int>(3);
-    global::total_count++;
-    std::cout << "total count: " << global::total_count << std::endl;
+    node_ = node;
 }
 
-Node::~Node()
+NodeUI::~NodeUI()
 {
     delete[] data_;
 }
 
-std::vector<double>& Node::getVectors()
+std::vector<double>& NodeUI::getVectors()
 {
     return vectors_;
 }

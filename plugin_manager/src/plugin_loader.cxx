@@ -5,6 +5,12 @@
 #include <plugin_manager/plugin_loader.hpp>
 #include <boost/dll.hpp>
 
+#if _WIN32
+#include <windows.h>
+#else
+#include <stdlib.h>
+#endif //_WIN32
+
 #ifdef _WIN32
 #define DLL_EXTENSION (".dll")
 #define DLL_STD_CALL __stdcall
@@ -17,6 +23,70 @@ namespace ss
 {
 namespace plugin
 {
+    bool appendEnvironmentVariable(std::string var_name, const std::string& var_value)
+    {
+#if _WIN32
+        const size_t buffer_size = 32767; //window环境变量支持的最大长度
+        char buffer[buffer_size] = { 0 };
+        size_t path_len = GetEnvironmentVariable(var_name.c_str(), buffer, sizeof(buffer));
+
+        std::string new_var_value;
+        if ((path_len > 0) && (path_len < buffer_size))
+        {
+            new_var_value = std::string(buffer) + ";" + var_value;
+        }
+        else
+        {
+            new_var_value = var_value;
+        }
+
+        return SetEnvironmentVariable(var_name.c_str(), new_var_value.c_str()) != 0;
+
+#else
+        const char* env_var = getenv(var_name.c_str());
+        std::string new_var_value;
+        if (env_var != nullptr)
+        {
+            new_var_value = std::string(env_var) + ":" + var_value;
+        }
+        else
+        {
+            new_var_value = var_value;
+        }
+
+        return setenv(var_name.c_str(), new_var_value.c_str(), 1) == 0;
+#endif
+    }
+
+    bool appendDllSearchPath(const std::string& path)
+    {
+#if _WIN32
+        return appendEnvironmentVariable("PATH", path);
+#else
+        return appendEnvironmentVariable("LD_LIBRARY_PATH", path);
+#endif
+    }
+
+    bool appendDllSearchPaths(const std::vector<std::string>& paths)
+    {
+        std::string value;
+#if _WIN32
+        for (const auto& path : paths)
+        {
+            value += (value.empty()) ? path : (std::string(";") + path);
+        }
+
+        return appendEnvironmentVariable("PATH", value);
+#else
+        for (const auto& path : paths)
+        {
+            value += (value.empty()) ? path : (std::string(":") + path);
+        }
+
+        return appendEnvironmentVariable("LD_LIBRARY_PATH", value);
+#endif
+    }
+
     std::shared_ptr<boost::dll::shared_library> loadPlugin(const std::string& file, ss::PluginFunctions& functions)
     {
         namespace fs = boost::filesystem;
@@ -219,6 +289,17 @@ namespace plugin
         }
 
         return nullptr;
+    }
+
+    std::shared_ptr<boost::dll::shared_library> loadPlugin(const std::string& file, const std::string& dependent_dir, ss::PluginFunctions& functions)
+    {
+        appendDllSearchPath(dependent_dir);
+        return loadPlugin(file, functions);
+    }
+    std::shared_ptr<boost::dll::shared_library> loadPlugin(const std::string& file, const std::string& dependent_dir, ss::UIPluginFunctions& functions)
+    {
+        appendDllSearchPath(dependent_dir);
+        return loadPlugin(file, functions);
     }
 
 } //namespace plugin

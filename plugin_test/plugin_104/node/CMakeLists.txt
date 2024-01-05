@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 
-project("Plugin.103")
+project("Plugin.104")
 
 #################################################################################
 # 设置C++编译器选项
@@ -10,6 +10,9 @@ project("Plugin.103")
 #################################################################################
 # 第三方库
 #################################################################################
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../glfw-3.3.9/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../glfw-3.3.9/lib)
 
 #################################################################################
 # 系统参数
@@ -34,11 +37,11 @@ set(PROJECT_SOURCES
 
 # 将源代码添加到此项目的可执行文件。
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCES})
-#target_link_libraries(
-#        ${PROJECT_NAME}
-#        fmt
-#        glfw3
-#)
+target_link_libraries(
+        ${PROJECT_NAME}
+        glfw3dll
+        opengl32
+)
 
 ####################################################################################################
 # 安装

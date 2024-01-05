@@ -1,4 +1,4 @@
 ﻿# 项目排除路径
-/out/clion_build/
 /out/
 /.vs/
+/data/plugin/

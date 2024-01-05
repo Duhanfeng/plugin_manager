@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <plugin_manager/plugin.hpp>
 #include <plugin_manager/plugin_loader.hpp>
+#include <boost/program_options.hpp>
+#include <windows.h>
 
 /*
  * 测试项: 加载插件,然后打印插件信息,然后释放资源
@@ -24,10 +26,19 @@ void load_plugin_test()
     }
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string file = data_dir + "/plugin/100/Plugin.103.dll";
+    std::string file = data_dir + "/plugin/100/Plugin.104.dll";
 
     ss::PluginFunctions functions;
-    auto lib = ss::plugin::loadPlugin(file, functions);
+    std::shared_ptr<boost::dll::shared_library> lib;
+    try
+    {
+        lib = ss::plugin::loadPlugin(file, functions);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        exit(-1);
+    }
     if (lib == nullptr)
     {
         return;
@@ -70,6 +81,27 @@ void dispose()
 
 int main()
 {
+    //获取当前程序的路径
+    boost::filesystem::path program_path = boost::dll::program_location();
+    //获取程序所在目录
+    boost::filesystem::path program_dir = program_path.parent_path();
+
+    std::cout << "program_path" << program_path << std::endl;
+    std::cout << "program_dir" << program_dir << std::endl;
+
+    std::string data_dir = std::string(DATA_DIR);
+    std::string dll_dir = data_dir + "/plugin/100/Plugin.104.Depend";
+
+    bool result = ss::plugin::appendDllSearchPath(dll_dir);
+    if (result)
+    {
+        std::cout << "success!" << std::endl;
+    }
+    else
+    {
+        std::cout << "error!" << std::endl;
+    }
+
     do
     {
         load_plugin_test();

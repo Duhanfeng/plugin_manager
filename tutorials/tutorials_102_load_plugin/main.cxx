@@ -115,11 +115,14 @@ void load_ui_plugin_test()
         std::cout << "getUIPlatform: " << ui_plugin_functions[type_id].getUIPlatform() << std::endl;
     }
 
-    auto plugin = plugin_functions[type_id].createPlugin(nullptr);
-    auto ui_plugin = ui_plugin_functions[type_id].createPluginUI(plugin, nullptr, nullptr);
-    ui_plugin_functions[type_id].disposePluginUI(ui_plugin);
+    for (int i = 0; i < 1000; ++i)
+    {
+        auto plugin = plugin_functions[type_id].createPlugin(nullptr);
+        auto ui_plugin = ui_plugin_functions[type_id].createPluginUI(plugin, nullptr, nullptr);
+        ui_plugin_functions[type_id].disposePluginUI(ui_plugin);
+        plugin_functions[type_id].disposePlugin(plugin);
+    }
     ui_plugin_functions[type_id].uninitPluginPlatform();
-    plugin_functions[type_id].disposePlugin(plugin);
 }
 
 void dispose()

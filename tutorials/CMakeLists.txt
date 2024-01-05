@@ -1,3 +1,4 @@
 ﻿add_subdirectory(tutorials_101_load_plugin)
 add_subdirectory(tutorials_102_load_plugin)
 add_subdirectory(tutorials_103_global_data)
+add_subdirectory(tutorials_104_dll_dir)

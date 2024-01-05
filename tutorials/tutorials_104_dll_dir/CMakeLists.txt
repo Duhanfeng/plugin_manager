@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 
-project("example1_load_plugin")
+project("tutorials_104_dll_dir")
 
 #################################################################################
 # 设置C++编译器选项
@@ -14,6 +14,8 @@ project("example1_load_plugin")
 # 系统参数
 #################################################################################
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/plugin_manager/include)
+add_definitions(-DDATA_DIR="${CMAKE_SOURCE_DIR}/data")
 
 #################################################################################
 # 添加工程路径
@@ -21,8 +23,6 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 set(PROJECT_SOURCES
         main.cxx
-        plugin_loader.cxx
-        plugin_loader.hpp
 )
 
 # 将源代码添加到此项目的可执行文件。
@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(
         ${PROJECT_NAME}
         ${Boost_LIBRARIES}
+        plugin_manager
 )
 
 ####################################################################################################
