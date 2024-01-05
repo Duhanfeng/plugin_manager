@@ -1,0 +1,14 @@
+prefix=D:/3rdpart-src/minizip-ng-master/install/minizip-ng
+exec_prefix=D:/3rdpart-src/minizip-ng-master/install/minizip-ng
+libdir=D:/3rdpart-src/minizip-ng-master/install/minizip-ng/lib
+sharedlibdir=D:/3rdpart-src/minizip-ng-master/install/minizip-ng/lib
+includedir=D:/3rdpart-src/minizip-ng-master/install/minizip-ng/include/minizip
+
+Name: minizip
+Description: Zip manipulation library
+Version: 4.0.4
+
+Requires.private: 
+Libs: -L${libdir} -L${sharedlibdir} -lminizip
+Libs.private:
+Cflags: -I${includedir}
