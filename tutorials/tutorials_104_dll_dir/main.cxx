@@ -4,11 +4,7 @@
 #include <plugin_manager/plugin.hpp>
 #include <plugin_manager/plugin_loader.hpp>
 #include <boost/program_options.hpp>
-#include <windows.h>
 
-/*
- * 测试项: 加载插件,然后打印插件信息,然后释放资源
- * */
 
 bool is_test_loop = true; //true: 循环测试,不打印消息,用于跟踪内存释放情况;  false: 单次测试,打印插件消息,用于测试插件加载是否成功
 

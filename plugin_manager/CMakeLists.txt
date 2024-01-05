@@ -38,7 +38,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(PROJECT_SOURCES
         include/plugin_manager/plugin.hpp
         include/plugin_manager/plugin_loader.hpp
+        include/plugin_manager/plugin_encryption.hpp
         src/plugin_loader.cxx
+        src/plugin_encryption.cxx
 )
 add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(
