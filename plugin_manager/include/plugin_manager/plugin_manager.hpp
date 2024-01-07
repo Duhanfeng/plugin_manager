@@ -4,6 +4,7 @@
 
 #pragma once
 #include <string>
+#include <unordered_map>
 #include <boost/dll.hpp>
 #include "plugin.hpp"
 #include "export_def.hpp"
@@ -14,14 +15,14 @@ class PluginInfos
 {
 public:
     //原始接口信息
-    std::string type_id;     //类型ID
-    int category = 0;        //类型[废弃]
+    std::string type_id;     //ID
+    int category = 0;        //类别[废弃]
     std::string name;        //名字
     std::string description; //描述
     //扩展接口信息
     std::string version;                      //版本号
     std::string author;                       //作者
-    std::string category_adv;                 //插件分类
+    std::string category_adv;                 //类别
     int type = PluginType::PluginType_Vision; //插件类型
 };
 
@@ -47,12 +48,23 @@ public:
     std::shared_ptr<boost::dll::shared_library> ui_plugin_lib; //UI插件动态库对象
 };
 
-class PluginManager
+class SS_PM_EXPORT_API PluginManager
 {
 public:
+    void init(const std::string& plugin_dir, const std::string& key);
 
+    std::unordered_map<std::string, PluginResources>& resources();
+    const std::unordered_map<std::string, PluginResources>& resources() const;
 
+protected:
+    void loadPlugin(const std::string& dir);
 
+protected:
+    const std::string plugin_extension = ".xplugin";
+    std::unordered_map<std::string, PluginResources> resources_;
+    std::string key_;
 };
+
+SS_PM_EXPORT_API bool packPlugin(const std::string& src_plugin_dir, const std::string& dst_plugin_file, const std::string& key);
 
 } //namespace ss

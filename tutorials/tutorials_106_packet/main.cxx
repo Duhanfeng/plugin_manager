@@ -17,7 +17,7 @@ int main()
     std::string dst_file = u8"./插件.zip";
 
     Timer timer;
-    if (ss::plugin::pack(src_dir, dst_file))
+    if (ss::plugin::pack(src_dir, dst_file, u8"12254"))
     {
         std::cout << "packet success!" << std::endl;
     }
@@ -31,7 +31,14 @@ int main()
     std::string unpack_dst_dir = u8"./解包";
 
     timer.reset();
-    ss::plugin::unpack(unpack_src_file, unpack_dst_dir);
+    if (ss::plugin::unpack(unpack_src_file, unpack_dst_dir, "12254"))
+    {
+        std::cout << "unpack success!" << std::endl;
+    }
+    else
+    {
+        std::cout << "unpack error!" << std::endl;
+    }
     timer.out("unpack");
 
     std::cout << "\n\n\nfinish" << std::endl;
