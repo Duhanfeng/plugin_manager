@@ -1,6 +1,7 @@
 ﻿
 # 设置打包规则
-set(PKG_PLUGIN_DIR ${CMAKE_SOURCE_DIR}/data/plugin)
+#set(PKG_PLUGIN_DIR ${CMAKE_SOURCE_DIR}/data/plugin)
+set(PKG_PLUGIN_DIR ${CMAKE_SOURCE_DIR}/data/插件)
 if (WIN32)
     set(PLUGIN_DLL_HEAD "")
     set(PLUGIN_DLL_EXTENSION "dll")

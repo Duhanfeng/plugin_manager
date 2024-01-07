@@ -22,7 +22,7 @@ void load_plugin_test()
     }
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string file = data_dir + "/plugin/100/Plugin.104.dll";
+    std::string file = data_dir + u8"/插件/100/Plugin.104.dll";
 
     ss::PluginFunctions functions;
     std::shared_ptr<boost::dll::shared_library> lib;
@@ -86,7 +86,7 @@ int main()
     std::cout << "program_dir" << program_dir << std::endl;
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string dll_dir = data_dir + "/plugin/100/Plugin.104.Depend";
+    std::string dll_dir = data_dir + u8"/插件/100/Plugin.104.第三方依赖";
 
     bool result = ss::plugin::appendDllSearchPath(dll_dir);
     if (result)

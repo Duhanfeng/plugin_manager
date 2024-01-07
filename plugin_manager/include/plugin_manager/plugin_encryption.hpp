@@ -4,14 +4,16 @@
 
 #pragma once
 #include <string>
+#include "export_def.hpp"
 
 namespace ss
 {
 namespace plugin
 {
     //加密
-    bool encryption(const std::string& src, const std::string& dst, unsigned char key);
+    SS_PM_EXPORT_API bool encryption(const std::string& src, const std::string& dst, unsigned char key);
     //解密
-    bool decryption(const std::string& src, const std::string& dst, unsigned char key);
-}
+    SS_PM_EXPORT_API bool decryption(const std::string& src, const std::string& dst, unsigned char key);
+
+} //namespace plugin
 } //namespace ss

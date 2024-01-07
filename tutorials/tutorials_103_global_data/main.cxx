@@ -24,7 +24,7 @@ void load_plugin_test()
     }
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string file = data_dir + "/plugin/100/Plugin.103.dll";
+    std::string file = data_dir + u8"/插件/100/Plugin.103.dll";
 
     ss::PluginFunctions functions;
     auto lib = ss::plugin::loadPlugin(file, functions);

@@ -12,13 +12,13 @@ void base_test()
     std::string data_dir = std::string(DATA_DIR);
 
     //对文件进行加密
-    std::string encryption_file = data_dir + "/plugin/100/Plugin.105.x_plugin";
-    std::string decryption_file = data_dir + "/plugin/100/Plugin.105.dll";
+    std::string encryption_file = data_dir + u8"/插件/100/Plugin.105.x_plugin";
+    std::string decryption_file = data_dir + u8"/插件/100/Plugin.105.dll";
 
     //如果加密文件不存在,则先进行加密
-    if (!boost::filesystem::exists(encryption_file))
+    //if (!boost::filesystem::exists(encryption_file))
     {
-        std::string file = data_dir + "/plugin/100/Plugin.103.dll";
+        std::string file = data_dir + u8"/插件/100/Plugin.103.dll";
         ss::plugin::encryption(file, encryption_file, 0x3D);
     }
 
@@ -43,17 +43,17 @@ void performanceTest()
 {
     namespace fs = boost::filesystem;
     std::string data_dir = std::string(DATA_DIR);
-    std::string encryption_file = data_dir + "/packet/105/105.ss_plugin";
+    std::string encryption_file = data_dir + u8"/插件/100/Plugin.105.x_plugin";
 
-    if (!fs::exists(encryption_file))
-    {
-        std::cerr << "file is not exist!" << std::endl;
-        std::exit(-1);
-    }
+    //if (!fs::exists(encryption_file))
+    //{
+    //    std::cerr << "file is not exist!" << std::endl;
+    //    std::exit(-1);
+    //}
 
     //测试解密性能
     Timer timer;
-    std::string decryption_dir = "./packet/105/decryption";
+    std::string decryption_dir = "./插件/105/decryption";
     if (!fs::exists(decryption_dir))
     {
         fs::create_directories(decryption_dir);

@@ -4,17 +4,14 @@
 
 #include <plugin_manager/plugin_loader.hpp>
 #include <boost/dll.hpp>
-
-#if _WIN32
-#include <windows.h>
-#else
-#include <stdlib.h>
-#endif //_WIN32
+#include "locale.hpp"
 
 #ifdef _WIN32
+#include <windows.h>
 #define DLL_EXTENSION (".dll")
 #define DLL_STD_CALL __stdcall
 #else
+#include <stdlib.h>
 #define DLL_EXTENSION (".so")
 #define DLL_STD_CALL
 #endif //_WIN32
@@ -25,7 +22,7 @@ namespace plugin
 {
     bool appendEnvironmentVariable(std::string var_name, const std::string& var_value)
     {
-#if _WIN32
+#ifdef _WIN32
         const size_t buffer_size = 32767; //window环境变量支持的最大长度
         char buffer[buffer_size] = { 0 };
         size_t path_len = GetEnvironmentVariable(var_name.c_str(), buffer, sizeof(buffer));
@@ -60,30 +57,30 @@ namespace plugin
 
     bool appendDllSearchPath(const std::string& path)
     {
-#if _WIN32
-        return appendEnvironmentVariable("PATH", path);
+#ifdef _WIN32
+        return appendEnvironmentVariable("PATH", toLocalString(path));
 #else
-        return appendEnvironmentVariable("LD_LIBRARY_PATH", path);
+        return appendEnvironmentVariable("LD_LIBRARY_PATH", toLocalString(path));
 #endif
     }
 
     bool appendDllSearchPaths(const std::vector<std::string>& paths)
     {
         std::string value;
-#if _WIN32
+#ifdef _WIN32
         for (const auto& path : paths)
         {
             value += (value.empty()) ? path : (std::string(";") + path);
         }
 
-        return appendEnvironmentVariable("PATH", value);
+        return appendEnvironmentVariable("PATH", toLocalString(value));
 #else
         for (const auto& path : paths)
         {
             value += (value.empty()) ? path : (std::string(":") + path);
         }
 
-        return appendEnvironmentVariable("LD_LIBRARY_PATH", value);
+        return appendEnvironmentVariable("LD_LIBRARY_PATH", toLocalString(value));
 #endif
     }
 
@@ -91,14 +88,17 @@ namespace plugin
     {
         namespace fs = boost::filesystem;
 
+        //字符编码转换
+        std::string local_file = toLocalString(file);
+
         //文件校验
-        fs::path path(file);
+        fs::path path(local_file);
         if (!fs::exists(path) || !fs::is_regular_file(path) || path.extension() != DLL_EXTENSION)
         {
             return nullptr;
         }
 
-        std::shared_ptr<boost::dll::shared_library> lib = std::make_shared<boost::dll::shared_library>(file);
+        std::shared_ptr<boost::dll::shared_library> lib = std::make_shared<boost::dll::shared_library>(path);
 
         //必选接口
         constexpr const char* GetPluginGUID{ "GetPluginGUID" };
@@ -214,19 +214,21 @@ namespace plugin
 
         return nullptr;
     }
-
     std::shared_ptr<boost::dll::shared_library> loadPlugin(const std::string& file, ss::UIPluginFunctions& functions)
     {
         namespace fs = boost::filesystem;
 
+        //字符编码转换
+        std::string local_file = toLocalString(file);
+
         //文件校验
-        fs::path path(file);
+        fs::path path(local_file);
         if (!fs::exists(path) || !fs::is_regular_file(path) || path.extension() != DLL_EXTENSION)
         {
             return nullptr;
         }
 
-        std::shared_ptr<boost::dll::shared_library> lib = std::make_shared<boost::dll::shared_library>(file);
+        std::shared_ptr<boost::dll::shared_library> lib = std::make_shared<boost::dll::shared_library>(path);
 
         //必选接口
         constexpr const char* GetPluginGUID{ "GetPluginGUID" };

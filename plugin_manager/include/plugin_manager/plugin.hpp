@@ -8,7 +8,7 @@
 
 enum PluginType
 {
-    PluginType_Vision,        //视觉算法插件
+    PluginType_Vision = 0,    //视觉算法插件
     PluginType_Hardware,      //硬件插件
     PluginType_IO,            //IO插件
     PluginType_Communication, //通信插件

@@ -8,7 +8,7 @@
  * 测试项: 加载插件,然后打印插件信息,然后释放资源
  * */
 
-bool is_test_loop = true; //true: 循环测试,不打印消息,用于跟踪内存释放情况;  false: 单次测试,打印插件消息,用于测试插件加载是否成功
+bool is_test_loop = false; //true: 循环测试,不打印消息,用于跟踪内存释放情况;  false: 单次测试,打印插件消息,用于测试插件加载是否成功
 
 std::unordered_map<std::string, std::shared_ptr<boost::dll::shared_library>> plugin_libs;
 std::unordered_map<std::string, ss::PluginFunctions> plugin_functions;
@@ -24,7 +24,7 @@ void load_plugin_test()
     }
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string file = data_dir + "/plugin/100/Plugin.102.dll";
+    std::string file = data_dir + u8"/插件/100/Plugin.102.dll";
 
     ss::PluginFunctions functions;
     auto lib = ss::plugin::loadPlugin(file, functions);
@@ -82,7 +82,7 @@ void load_ui_plugin_test()
     }
 
     std::string data_dir = std::string(DATA_DIR);
-    std::string file = data_dir + "/plugin/100/Plugin.102.Control.dll";
+    std::string file = data_dir + u8"/插件/100/Plugin.102.Control.dll";
 
     ss::UIPluginFunctions functions;
     auto lib = ss::plugin::loadPlugin(file, functions);

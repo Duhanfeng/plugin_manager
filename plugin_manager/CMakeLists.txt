@@ -25,9 +25,13 @@ endif ()
 # 第三方库
 #################################################################################
 
+include_directories(${CMAKE_SOURCE_DIR}/3rdparty/minizip-ng/include)
+link_directories(${CMAKE_SOURCE_DIR}/3rdparty/minizip-ng/lib)
+
 #################################################################################
 # 系统参数
 #################################################################################
+add_definitions(-DSS_PM_EXPORT_FLAG)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
@@ -39,11 +43,28 @@ set(PROJECT_SOURCES
         include/plugin_manager/plugin.hpp
         include/plugin_manager/plugin_loader.hpp
         include/plugin_manager/plugin_encryption.hpp
+        include/plugin_manager/plugin_pack.hpp
+        include/plugin_manager/plugin_manager.hpp
         src/plugin_loader.cxx
         src/plugin_encryption.cxx
+        src/plugin_pack.cxx
+        src/plugin_manager.cxx
+        src/locale.hpp
+        src/locale.cxx
 )
-add_library(${PROJECT_NAME} ${PROJECT_SOURCES})
+
+# 打包为静态库
+add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
 target_link_libraries(
         ${PROJECT_NAME}
         ${Boost_LIBRARIES}
+        ${MINIZIP_LIBS}
+)
+
+# 打包为动态库
+add_library(${PROJECT_NAME}_dll SHARED ${PROJECT_SOURCES})
+target_link_libraries(
+        ${PROJECT_NAME}_dll
+        ${Boost_LIBRARIES}
+        ${MINIZIP_LIBS}
 )

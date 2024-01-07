@@ -3,9 +3,10 @@
 //
 
 #include <plugin_manager/plugin_encryption.hpp>
-#include <boost/filesystem.hpp>
 #include <iostream>
 #include <fstream>
+#include <boost/filesystem.hpp>
+#include "locale.hpp"
 
 namespace ss
 {
@@ -14,14 +15,19 @@ namespace plugin
     bool encryption(const std::string& src, const std::string& dst, unsigned char key)
     {
         namespace fs = boost::filesystem;
-        if (!fs::exists(src))
+
+        //字符编码转换
+        std::string local_src = toLocalString(src);
+        std::string local_dst = toLocalString(dst);
+
+        if (!fs::exists(local_src))
         {
             return false;
         }
 
         //以二进制加载文件
-        std::ifstream infile(src, std::ios::binary);
-        std::ofstream outfile(dst, std::ios::binary);
+        std::ifstream infile(local_src, std::ios::binary);
+        std::ofstream outfile(local_dst, std::ios::binary);
         if (infile.fail() || outfile.fail())
         {
             infile.close();

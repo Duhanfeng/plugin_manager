@@ -36,11 +36,6 @@ target_link_libraries(
         ${PROJECT_NAME}
         ${Boost_LIBRARIES}
         plugin_manager
-        bzip2
-        liblzma
-        libminizip
-        zlibstatic
-        zstd_static
 )
 
 ####################################################################################################
